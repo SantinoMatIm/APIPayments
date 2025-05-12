@@ -18,10 +18,10 @@ const authenticateToken = async (req, res, next) => {
 
     // Verificar el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Buscar el usuario
     const user = await db.users.findById(decoded.userId);
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -40,7 +40,7 @@ const authenticateToken = async (req, res, next) => {
     // Agregar el usuario al request
     req.user = user;
     req.userId = user.id;
-    
+
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -49,14 +49,14 @@ const authenticateToken = async (req, res, next) => {
         message: 'Token expirado.'
       });
     }
-    
+
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
         success: false,
         message: 'Token inválido.'
       });
     }
-    
+
     return res.status(500).json({
       success: false,
       message: 'Error al verificar autenticación.'

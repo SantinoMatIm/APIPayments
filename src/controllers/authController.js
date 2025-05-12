@@ -2,11 +2,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 const User = require('../models/User');
-const { 
-  asyncHandler, 
-  ConflictError, 
+const {
+  asyncHandler,
+  ConflictError,
   UnauthorizedError,
-  NotFoundError 
+  NotFoundError
 } = require('../middleware/errorHandler');
 
 /**
@@ -15,11 +15,7 @@ const {
  * @returns {string} Token JWT
  */
 const generateToken = (userId) => {
-  return jwt.sign(
-    { userId },
-    process.env.JWT_SECRET,
-    { expiresIn: '24h' }
-  );
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 };
 
 /**
@@ -39,10 +35,10 @@ const register = asyncHandler(async (req, res) => {
 
   // Crear el nuevo usuario
   const newUser = new User(name, email, hashedPassword);
-  
+
   // Agregar un balance inicial
   newUser.balance = 1000; // Balance inicial de $1000
-  
+
   // Guardar el usuario en la base de datos
   await db.users.save(newUser);
 

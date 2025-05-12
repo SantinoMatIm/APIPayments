@@ -1,11 +1,5 @@
 const db = require('../config/database');
-const { 
-  asyncHandler, 
-  NotFoundError,
-  ConflictError,
-  ValidationError,
-  ForbiddenError
-} = require('../middleware/errorHandler');
+const { asyncHandler, NotFoundError } = require('../middleware/errorHandler');
 
 /**
  * Obtiene un usuario por ID (solo admin o el mismo usuario)
@@ -60,7 +54,7 @@ const searchUsers = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     data: {
-      users: paginatedUsers.map(user => user.toSafeObject()),
+      users: paginatedUsers.map((user) => user.toSafeObject()),
       pagination
     }
   });

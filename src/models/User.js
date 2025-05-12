@@ -21,6 +21,7 @@ class User {
     this.updatedAt = new Date();
     this.balance = 0; //Balance inicial del usuario
     this.status = 'active'; // Estado del usuario (active, inactive, blocked)
+    this.role = 'user'; //Por seguridad por defecto es user
   }
 
   /**

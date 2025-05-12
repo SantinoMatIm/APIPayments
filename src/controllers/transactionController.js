@@ -1,7 +1,7 @@
 const db = require('../config/database');
 const { Transaction, TransactionType, TransactionStatus } = require('../models/Transaction');
-const { 
-  asyncHandler, 
+const {
+  asyncHandler,
   NotFoundError,
   ValidationError,
   PaymentError,
@@ -39,13 +39,7 @@ const createTransaction = asyncHandler(async (req, res) => {
   }
 
   // Crear la transacción
-  const transaction = new Transaction(
-    senderUserId,
-    receiverUserId,
-    amount,
-    description,
-    type
-  );
+  const transaction = new Transaction(senderUserId, receiverUserId, amount, description, type);
 
   // Guardar la transacción
   await db.transactions.save(transaction);
@@ -233,7 +227,7 @@ const getTransactionHistory = asyncHandler(async (req, res) => {
 
   // Filtrar por fechas si se proporcionan
   if (startDate || endDate) {
-    transactions = transactions.filter(transaction => {
+    transactions = transactions.filter((transaction) => {
       const transactionDate = new Date(transaction.createdAt);
       if (startDate && transactionDate < new Date(startDate)) return false;
       if (endDate && transactionDate > new Date(endDate)) return false;
@@ -259,7 +253,7 @@ const getTransactionHistory = asyncHandler(async (req, res) => {
   const enrichedTransactions = await Promise.all(
     paginatedTransactions.map(async (transaction) => {
       const transactionObj = transaction.toObject();
-      
+
       // Agregar información del otro usuario
       let otherUser;
       if (transaction.senderUserId === userId) {
@@ -269,7 +263,7 @@ const getTransactionHistory = asyncHandler(async (req, res) => {
         otherUser = await db.users.findById(transaction.senderUserId);
         transactionObj.role = 'receiver';
       }
-      
+
       if (otherUser) {
         transactionObj.otherParty = {
           id: otherUser.id,
@@ -277,7 +271,7 @@ const getTransactionHistory = asyncHandler(async (req, res) => {
           email: otherUser.email
         };
       }
-      
+
       return transactionObj;
     })
   );
@@ -336,7 +330,7 @@ const getTransactionById = asyncHandler(async (req, res) => {
  */
 const validateTransactionAuthorization = asyncHandler(async (req, res) => {
   const { transactionId } = req.params;
-  
+
   // Buscar la transacción
   const transaction = await db.transactions.findById(transactionId);
   if (!transaction) {
