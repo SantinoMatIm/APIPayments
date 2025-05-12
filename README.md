@@ -1,5 +1,7 @@
 # Payment System API
 
+[![CI/CD Pipeline](https://github.com/SantinoMatIm/APIPayments/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/SantinoMatIm/APIPayments/actions/workflows/ci-cd.yml)
+
 API REST para un sistema de pagos que permite registrar usuarios, iniciar transacciones, consultar historiales y validar autorizaciones.
 
 ## 🚀 Características
